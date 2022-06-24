@@ -19,15 +19,33 @@
         </div>
 
         <div class="mb-3">
-          <label for="category_id" class="form-label">Category</label>
-          <select class="form-control" name="category_id" id="category_id">
-            <option>Select Category</option>
-            @foreach($categories as $category)
-            <option value="{{$category->id}}" {{old('category_id') == $category->id ? 'selected' : ''}}>{{$category->name}}</option>
-            @endforeach
-          </select>
-          @include('partials.single_errors',['variable' => 'category_id'])
+            <label for="category_id" class="form-label">Category</label>
+            <select class="form-control" name="category_id" id="category_id">
+                <option value="">Select Category</option>
+                @foreach($categories as $category)
+                <option value="{{$category->id}}" {{old('category_id') == $category->id ? 'selected' : ''}}>{{$category->name}}</option>
+                @endforeach
+            </select>
+            @include('partials.single_errors',['variable' => 'category_id'])
         </div>
+
+        <div class="mb-3">
+          <label for="tag_id" class="form-label">Tags</label>
+          <select multiple class="custom-select" name="tags[]" id="tag_id" aria-label="Tag">
+            <option value="" disabled>Select a Tags</option>
+            @forelse($tags as $tag)
+            @if($errors->any())
+            <option value="{{$tag->id}}" {{in_array($tag->id,old('tags',[])) ? 'selected' : ''}}>{{$tag->name}}</option>
+            @else
+            <option value="{{$tag->id}}">{{$tag->name}}</option>
+            @endif
+            @empty
+            <option>No Tags</option>
+            @endforelse
+          </select>
+          @include('partials.single_errors',['variable' => 'tag_id'])
+        </div>
+
 
         <div class="mb-3">
             <label for="body" class="form-label">Body</label>

@@ -32,10 +32,9 @@ class CategoryController extends Controller
         $validate_data = $request->validate([
             'name' => 'required|unique:categories'
         ]);
-        //dd($validate_data);
         $validate_data['slug'] = Str::slug($request->name);
         Category::create($validate_data);
-        return redirect()->back()->with('status',"Category Created Successfully");
+        return redirect()->back()->with('status',"Category $request->name Created Successfully");
     }
 
     /**
@@ -50,7 +49,6 @@ class CategoryController extends Controller
         $validate_data = $request->validate([
             'name' => ['required', Rule::unique('categories')->ignore($category)]
         ]);
-        //dd($validate_data);
         $validate_data['slug'] = Str::slug($request->name);
         $category->update($validate_data);
         return redirect()->back()->with('status', "Category $category->name Update SuccessFully");
