@@ -32,21 +32,21 @@
                 <tbody>
                     @forelse($categories as $category)
                     <tr>
-                        <td scope="row">{{$category->id}}</td>
-                        <td>
+                        <td scope="row" class="align-middle">{{$category->id}}</td>
+                        <td class="align-middle">
                             <form id="form-categories-{{$category->id}}" action="{{route('admin.categories.update',$category->slug)}}" method="post">
                                 @csrf
                                 @method('PATCH')
                                 <input class="border-0 bg-transparent" type="text" name="name" id="name" value="{{$category->name}}">
                             </form>
                         </td>
-                        <td>{{$category->slug}}</td>
-                        <td class="text-center">
+                        <td class="align-middle">{{$category->slug}}</td>
+                        <td class="text-center align-middle">
                             <div class="bg-info badge p-2 text-white">
                                 {{count($category->posts)}}
                             </div>
                         </td>
-                        <td class="d-flex">
+                        <td class="d-flex align-middle">
                             <button form="form-categories-{{$category->id}}" type="submit" class="btn btn-success mr-2">Update</button>
                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-category-{{$category->id}}">
                                 Delete
