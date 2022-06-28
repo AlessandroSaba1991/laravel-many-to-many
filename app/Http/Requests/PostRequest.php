@@ -33,7 +33,7 @@ class PostRequest extends FormRequest
             'body'=>['nullable'],
             'image'=>['nullable'],
             'category_id' => ['exists:categories,id', 'nullable'],
-            'category_id' => ['exists:users,id', 'nullable'],
+            'user_id' => ['exists:users,id', 'nullable'],
             'tags' => ['exists:tags,id', 'nullable'],
         ];
     }

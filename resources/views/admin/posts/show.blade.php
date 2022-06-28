@@ -6,7 +6,7 @@
     <div class="card mx-auto">
         <div class="row">
             <div class="col">
-                <img class="w-100 h-100" src="{{$post->image}}" alt="{{$post->title}}">
+                <img class="w-100 h-100" src="{{asset('storage/' . $post->image)}}" alt="{{$post->title}}">
             </div>
             <div class="col">
                 <div class="card-body">

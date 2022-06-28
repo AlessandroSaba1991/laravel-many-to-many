@@ -29,7 +29,7 @@
                             No Tags
                             @endif</td>
                 <td width="200" class="align-middle">{{$post->slug}}</td>
-                <td class="align-middle"><img width="100" src="{{$post->image}}" alt=""></td>
+                <td class="align-middle"><img width="100" src="{{asset('storage/' . $post->image)}}" alt=""></td>
                 <td class="align-middle">
                     <!-- view -->
                     <a class="btn btn-primary" href="{{route('admin.posts.show',$post->slug)}}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">

@@ -2,7 +2,7 @@
 @section('content')
 <div class="container">
     @include('partials.errors')
-    <form class="bg-light mt-5 p-3" action="{{route('admin.posts.store')}}" method="post">
+    <form class="bg-light mt-5 p-3" action="{{route('admin.posts.store')}}" method="post" enctype="multipart/form-data">
         @csrf
 
         <div class="mb-3">
@@ -11,16 +11,15 @@
             @include('partials.single_errors',['variable' => 'title'])
         </div>
 
-
         <div class="mb-3">
             <label for="image" class="form-label">Image</label>
-            <input type="text" name="image" id="image" class="form-control @error('image') is-invalid @enderror" placeholder="Insert image" aria-describedby="helpimage" value="{{old('image')}}">
+            <input type="file" name="image" id="image" class="pl-0 pt-1 form-control @error('image') is-invalid @enderror" placeholder="Insert image" aria-describedby="helpimage">
             @include('partials.single_errors',['variable' => 'image'])
         </div>
 
         <div class="mb-3">
             <label for="category_id" class="form-label">Category</label>
-            <select class="form-control" name="category_id" id="category_id">
+            <select class="form-control @error('category_id') is-invalid @enderror" name="category_id" id="category_id">
                 <option value="">Select Category</option>
                 @foreach($categories as $category)
                 <option value="{{$category->id}}" {{old('category_id') == $category->id ? 'selected' : ''}}>{{$category->name}}</option>

@@ -3,7 +3,7 @@
 <div class="container">
     <h1>Edit "{{$post->title}}</h1>
     @include('partials.errors')
-    <form class="bg-light mt-5 p-3" action="{{route('admin.posts.update',$post->slug)}}" method="post">
+    <form class="bg-light mt-5 p-3" action="{{route('admin.posts.update',$post->slug)}}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="form-group">
@@ -13,10 +13,13 @@
                 @include('partials.single_errors',['variable' => 'title'])
             </div>
         </div>
-        <div class="form-group">
+        <div class="d-flex">
+            <div class="media mr-4">
+                <img width="120" src="{{asset('storage/' . $post->image)}}" alt="">
+            </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Image</label>
-                <input type="text" name="image" id="image" class="form-control @error('image') is-invalid @enderror" placeholder="Insert image" aria-describedby="helpimage" value="{{$post->image}}">
+                <input type="file" name="image" id="image" class="pl-0 pt-1 form-control @error('image') is-invalid @enderror" placeholder="Insert image" aria-describedby="helpimage">
                 @include('partials.single_errors',['variable' => 'image'])
             </div>
         </div>

@@ -8,6 +8,7 @@ use App\Http\Requests\PostRequest;
 use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 
@@ -33,7 +34,7 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        return view('admin.posts.create',compact('categories','tags'));
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -48,6 +49,15 @@ class PostController extends Controller
         $validate_data = $request->validated();
         $validate_data['slug'] = Str::slug($request->title);
         $validate_data['user_id'] = Auth::user()->id;
+        if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => 'nullable|image|max:300'
+            ]);
+            $path = Storage::put('posts_images', $request->image);
+            $validate_data['image'] = $path;
+        }
+        //ddd($validate_data);
+
         $new_post = Post::create($validate_data);
         $new_post->tags()->attach($request->tags);
         return redirect()->route('admin.posts.index')->with('status', 'Post Create SuccessFull');
@@ -74,7 +84,7 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        return view('admin.posts.edit', compact('post','categories','tags'));
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -88,6 +98,14 @@ class PostController extends Controller
     {
         $validate_data = $request->validated();
         $validate_data['slug'] = Str::slug($request->title);
+        if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => 'nullable|image|max:300'
+            ]);
+            Storage::delete($post->image);
+            $path = Storage::put('posts_images', $request->image);
+            $validate_data['image'] = $path;
+        }
         $post->update($validate_data);
         $post->tags()->sync($request->tags);
         return redirect()->route('admin.posts.show', compact('post'))->with('status', "Post $post->title Update SuccessFull");
@@ -101,6 +119,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        Storage::delete($post->image);
         $post->delete();
         return redirect()->route('admin.posts.index')->with('status', 'Post Delete SuccessFull');
     }
