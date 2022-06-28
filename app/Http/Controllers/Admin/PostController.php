@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostRequest;
+use App\Mail\NewPostCreated;
 use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -60,6 +62,7 @@ class PostController extends Controller
 
         $new_post = Post::create($validate_data);
         $new_post->tags()->attach($request->tags);
+        Mail::to($request->user())->send(new NewPostCreated($new_post));
         return redirect()->route('admin.posts.index')->with('status', 'Post Create SuccessFull');
     }
 
